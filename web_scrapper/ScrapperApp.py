@@ -1,0 +1,44 @@
+import kivy
+# kivy.require('1.0.7')
+
+from kivy.app import App
+from controllers import ScrapperController
+from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
+from kivy.core.window import Window
+from kivy.config import Config
+Config.set('kivy', 'exit_on_escape', '0')
+Config.set('widgets', 'scroll_distance', '100')
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
+
+class ScrapperApp(App):
+	kv_directory = 'kv_templates'
+	def build(self):
+		Window.bind(on_request_close=self.on_request_close)	
+		return ScrapperController()
+	
+	def on_request_close(self, *args):
+		self.textpopup(title='Exit', text='Are you sure?')
+		return True
+
+	def textpopup(self, title='', text=''):
+		"""Open the pop-up with the name.
+
+		:param title: title of the pop-up to open
+		:type title: str
+		:param text: main text of the pop-up to open
+		:type text: str
+		:rtype: None
+		"""
+		box = BoxLayout(orientation='vertical')
+		box.add_widget(Label(text=text))
+		mybutton = Button(text='OK', size_hint=(1, 0.25))
+		box.add_widget(mybutton)
+		popup = Popup(title=title, content=box, size_hint=(None, None), size=(600, 300))
+		mybutton.bind(on_release=self.stop)
+		popup.open()
+
+if __name__ == '__main__':	
+	ScrapperApp().run()

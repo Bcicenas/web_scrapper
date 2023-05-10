@@ -1,0 +1,48 @@
+#:kivy 1.0
+#:import rgba kivy.utils.get_color_from_hex
+<ScrapperController>:
+	url_input: url_input_id
+	search_input: search_input_id
+	result_label: result_label_id
+	canvas.before:
+		Color:
+			rgba: rgba('#006472')
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			padding: (10,10,10,10)
+			size_hint: (1, .1)
+			orientation: 'horizontal'
+			spacing: 50
+			TextInput:
+				id: url_input_id
+				hint_text: 'URL'
+				size_hint: (None, None)
+				height: 30
+				width: 350
+			TextInput:
+				id: search_input_id
+				hint_text: 'Search Pattern'
+				size_hint: (None, None)
+				height: 30
+				width: 250
+			Button:
+				text: 'Search'
+				on_press: root.start_scrape()
+				size_hint: (None, None)
+				height: 30
+				width: 60
+		ScrollView: 
+			size_hint: (1, .9)
+			bar_width: 10
+			id: scrlv   
+			TextInput:
+				id: result_label_id
+				size_hint: 1, None
+				text: 'Result'
+				height: max( (len(self._lines)+1) * self.line_height, scrlv.height)
+				readonly: True
+
