@@ -7,6 +7,9 @@
    - Create python virutalenv
    - Run ``` pip install . ```
    - Run ScrapperApp.py ``` web_scrapper\ScrapperApp.py ```
+  Application usage:
+   - As for now you can enter url and search phrase to scrape desired website.
+   - Result will be shown bellow
    
 # To do list
  - Scrapping scenarios
