@@ -5,7 +5,18 @@ from scrapper import scrapper
 from kivy.loader import Loader
 from kivy.clock import Clock
 from threading import Thread
+from kivy.uix.popup import Popup
 
+import os
+
+class SaveDialog(FloatLayout):
+	save = ObjectProperty(None)
+	text_input = ObjectProperty(None)
+	cancel = ObjectProperty(None)
+
+	def get_default_path(self):
+		return os.path.expanduser("~\Desktop")	
+	
 class ScrapperController(BoxLayout):
 	'''Create a controller that receives a custom widget from the kv lang file.
 	
@@ -18,8 +29,11 @@ class ScrapperController(BoxLayout):
 	url_input = ObjectProperty(rebind=True)	
 	search_input = ObjectProperty(rebind=True)	
 	result_label = ObjectProperty(rebind=True)
+	savefile = ObjectProperty(None)
+	text_input = ObjectProperty(None)
 	scrape_result = 'Result'
 	scrape_success = True
+
 	def update(self):
 		Clock.schedule_interval(self.update_ui_callback, 1)
 
@@ -45,3 +59,19 @@ class ScrapperController(BoxLayout):
 		else:
 			self.scrape_result = str(sc.find_all(self.search_input.text.strip()))
 			self.scrape_success = True
+
+	def dismiss_popup(self):
+		self._popup.dismiss()
+
+	def show_save(self):
+		content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
+		self._popup = Popup(title="Save file", content=content,
+							size_hint=(0.9, 0.9))
+		self._popup.open()
+
+	def save(self, path, filename):
+		with open(os.path.join(path, filename), 'w', encoding='utf-8') as stream:
+			stream.write(self.result_label.text)
+
+		self.dismiss_popup()
+		

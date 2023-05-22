@@ -18,3 +18,4 @@ Application usage:
  - Export Scrapping result to csv/json/html etc..
 
 # Done tasks
+ - Export raw result to text file
